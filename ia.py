@@ -14,7 +14,7 @@ clasificador = tree.DecisionTreeClassifier()
 clasificador.fit(caracteristicas, etiquetas)
 
 # Le pedimos que adivine una fruta nueva: 160 gramos y textura rugosa (0)
-resultado = clasificador.predict([[160, 0]])
+resultado = clasificador.predict([[110, 1]])
 
 if resultado[0] == 0:
     print("La IA dice: ¡Es una Manzana!")
