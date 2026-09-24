@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espacio Católico Integral de Doña Esperanza</title>
+    <style>
+        :root {
+            --primary: #1A365D;       /* Azul marino litúrgico */
+            --secondary: #B7791F;     /* Dorado elegante */
+            --accent: #2C5282;        /* Azul secundario */
+            --bg-light: #F7FAFC;      /* Fondo muy suave */
+            --card-bg: #FFFFFF;       /* Tarjetas blancas */
+            --text-main: #2D3748;     /* Texto principal legible */
+            --border-color: #E2E8F0;  /* Bordes suaves */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .welcome-title {
+            font-size: 1.6rem;
+            margin: 0;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 5px;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid var(--secondary);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background-color: var(--secondary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        main {
+            flex: 1;
+            padding: 2rem 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--secondary);
+            border-top: 1px solid var(--border-color);
+        }
+
+        h2 {
+            color: var(--primary);
+            margin-top: 0;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        p, li {
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        /* Buscador Avanzado */
+        .search-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 14px 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--secondary);
+        }
+
+        .search-btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.05rem;
+            transition: background-color 0.3s;
+        }
+
+        .search-btn:hover {
+            background-color: var(--accent);
+        }
+
+        .quick-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .tag-chip {
+            background-color: #EDF2F7;
+            border: 1px solid #CBD5E0;
+            padding: 6px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4A5568;
+            transition: all 0.2s;
+        }
+
+        .tag-chip:hover {
+            background-color: var(--secondary);
+            color: white;
+            border-color: var(--secondary);
+        }
+
+        /* Cuadrícula de Meses */
+        .month-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .month-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            border-top: 5px solid var(--primary);
+            transition: transform 0.2s;
+        }
+
+        .month-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .month-name {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Oraciones */
+        .prayer-box {
+            background-color: #FAF5FF;
+            border-left: 5px solid #805AD5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        /* Notas */
+        textarea {
+            width: 100%;
+            height: 180px;
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            font-family: inherit;
+            font-size: 1.05rem;
+            box-sizing: border-box;
+            resize: vertical;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: var(--secondary);
+        }
+
+        .btn-action {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: background-color 0.3s;
+        }
+
+        .btn-action:hover {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #2D3748;
+            color: #CBD5E0;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="welcome-title">🕊️ Bienvenido doña Esperanza</h1>
+        <nav>
+            <button class="nav-btn active" onclick="switchTab('inicio')">🏠 Inicio / Buscador</button>
+            <button class="nav-btn" onclick="switchTab('calendario')">📅 Calendario Litúrgico</button>
+            <button class="nav-btn" onclick="switchTab('oraciones')">🙏 Oraciones y Guías</button>
+            <button class="nav-btn" onclick="switchTab('notas')">📝 Mis Notas y Apuntes</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- SECCIÓN 1: INICIO / BUSCADOR -->
+        <div id="inicio" class="section active">
+            <div class="card">
+                <h2>Buscador Católico Inteligente</h2>
+                <p>Escribe cualquier palabra o tema que necesites para tu catequesis, oraciones o reflexiones:</p>
+                
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Ej. Rosario, San José, Mandamientos, Biblia, Sacramentos...">
+                    <button class="search-btn" onclick="buscarContenido()">Buscar</button>
+                </div>
+
+                <p style="margin-bottom: 5px; font-weight: bold; font-size: 0.95rem; color: #718096;">O haz clic en los temas rápidos:</p>
+                <div class="quick-tags">
+                    <div class="tag-chip" onclick="buscarRapido('biblia')">📖 Biblia</div>
+                    <div class="tag-chip" onclick="buscarRapido('rosario')">📿 Rosario</div>
+                    <div class="tag-chip" onclick="buscarRapido('mandamientos')">📜 Mandamientos</div>
+                    <div class="tag-chip" onclick="buscarRapido('sacramentos')">⛪ Sacramentos</div>
+                    <div class="tag-chip" onclick="buscarRapido('san jose')">👨‍👧 San José</div>
+                    <div class="tag-chip" onclick="buscarRapido('familia')">👨‍👩‍👧‍👦 Sagrada Familia</div>
+                </div>
+            </div>
+
+            <div id="searchResultCard" class="card" style="display: none;">
+                <h3 id="resultTitle" style="color: var(--primary); font-size: 1.3rem;">Resultado</h3>
+                <p id="resultDesc" style="font-size: 1.1rem;"></p>
+            </div>
+
+            <div class="card">
+                <h2>✨ Reflexión del Día para Doña Esperanza</h2>
+                <p><em>"Todo lo puedo en Cristo que me fortalece."</em> (Filipenses 4,13)</p>
+                <p>Que el Señor bendiga grandemente su labor enseñando a los niños y guiando a su comunidad. Recuerde que cada pequeño esfuerzo en la catequesis siembra una semilla de amor eterno en el corazón de los pequeños.</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 2: CALENDARIO LITÚRGICO -->
+        <div id="calendario" class="section">
+            <div class="card">
+                <h2>Calendario Litúrgico y Devociones Mensuales</h2>
+                <p>Programación completa basada en sus apuntes para guiar las actividades mes a mes:</p>
+            </div>
+
+            <div class="month-grid">
+                <div class="month-card">
+                    <div class="month-name">Septiembre 📖</div>
+                    <div><strong>La Biblia:</strong> Presentación dinámica, estudio de las escrituras y acercamiento familiar a la Palabra de Dios.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Octubre 📿</div>
+                    <div><strong>Mes del Rosario:</strong> Tiempo especial de meditación de los misterios marianos en comunidad y oraciones diarias.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Noviembre 🕯️</div>
+                    <div><strong>Almas del Purgatorio:</strong> Oración constante por los fieles difuntos y preparación espiritual para el fin de los tiempos.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Diciembre 🌟</div>
+                    <div><strong>Adviento y Navidad:</strong> Esperando la venida del Niño Jesús y recordando su nacimiento en Belén con esperanza.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Enero ✨</div>
+                    <div><strong>Santísimo Nombre de Jesús:</strong> Recordando el nombre bendito dado por Dios que está por encima de todo nombre.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Febrero 👨‍👩‍👧‍👦</div>
+                    <div><strong>Sagrada Familia:</strong> Meditación sobre el hogar de Nazaret y la presentación de Jesús en el templo.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Marzo 🔨</div>
+                    <div><strong>San José:</strong> Celebración al padre adoptivo de Jesús y esposo fiel de la Santísima Virgen María.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Abril 🕊️</div>
+                    <div><strong>Resurrección (Pascua):</strong> La gran fiesta del triunfo de Cristo sobre la muerte. ¡Aleluya! Tiempo de renovación.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Mayo 🌸</div>
+                    <div><strong>Santísima Virgen María:</strong> Mes de flores, cantos y devoción especial a nuestra Madre del Cielo.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Junio ❤️</div>
+                    <div><strong>Sagrado Corazón de Jesús:</strong> Devoción al amor infinito y misericordioso representado en su Sagrado Corazón.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Julio 🍷</div>
+                    <div><strong>Preciosísima Sangre:</strong> Contemplación de la sangre redentora derramada por la salvación de toda la humanidad.</div>
+                </div>
+                <div class="month-card">
+                    <div class="month-name">Agosto 💙</div>
+                    <div><strong>Inmaculado Corazón de María:</strong> Reflexión sobre la pureza, el refugio y el tierno amor del Corazón de María.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 3: ORACIONES Y GUÍAS -->
+        <div id="oraciones" class="section">
+            <div class="card">
+                <h2>Oraciones Esenciales y Guías Católicas</h2>
+                <p>Material de consulta rápida para rezar o compartir con los niños de catequesis:</p>
+
+                <h3>1. Señal de la Cruz</h3>
+                <div class="prayer-box">
+                    "Por la señal de la Santa Cruz, de nuestros enemigos, líbranos, Señor, Dios nuestro. En el nombre del Padre, y del Hijo, y del Espíritu Santo. Amén."
+                </div>
+
+                <h3>2. Padre Nuestro</h3>
+                <div class="prayer-box">
+                    "Padre nuestro, que estás en el cielo, santificado sea tu Nombre; venga a nosotros tu reino; hágase tu voluntad en la tierra como en el cielo. Danos hoy nuestro pan de cada día; perdona nuestras ofensas, como también nosotros perdonamos a los que nos ofenden; no nos dejes caer en la tentación, y líbranos del mal. Amén."
+                </div>
+
+                <h3>3. Ave María</h3>
+                <div class="prayer-box">
+                    "Dios te salve, María, llena eres de gracia, el Señor es contigo. Bendita tú eres entre todas las mujeres, y bendito es el fruto de tu vientre, Jesús. Santa María, Madre de Dios, ruega por nosotros, pecadores, ahora y en la hora de nuestra muerte. Amén."
+                </div>
+
+                <h3>4. Los 10 Mandamientos de la Ley de Dios</h3>
+                <ul>
+                    <li>1. Amar a Dios sobre todas las cosas.</li>
+                    <li>2. No tomar el nombre de Dios en vano.</li>
+                    <li>3. Santificar las fiestas.</li>
+                    <li>4. Honrar a tu padre y a tu madre.</li>
+                    <li>5. No matar.</li>
+                    <li>6. No cometer actos impuros.</li>
+                    <li>7. No robar.</li>
+                    <li>8. No dar falso testimonio ni mentir.</li>
+                    <li>9. No consentir pensamientos ni deseos impuros.</li>
+                    <li>10. No codiciar los bienes ajenos.</li>
+                </ul>
+
+                <h3>5. Los 7 Sacramentos de la Iglesia</h3>
+                <ul>
+                    <li>💧 <strong>Bautismo:</strong> Nos borra el pecado original y nos hace hijos de Dios.</li>
+                    <li>🍞 <strong>Eucaristía:</strong> Recibimos el Cuerpo y la Sangre de Cristo.</li>
+                    <li>🕊️ <strong>Confirmación:</strong> Recibimos la fuerza del Espíritu Santo.</li>
+                    <li>⚖️ <strong>Reconciliación (Confesión):</strong> El perdón de nuestros pecados.</li>
+                    <li>🌿 <strong>Unción de los enfermos:</strong> Alivio espiritual y corporal para los enfermos.</li>
+                    <li>💍 <strong>Matrimonio:</strong> Bendición del amor entre un hombre y una mujer.</li>
+                    <li>🙌 <strong>Orden Sacerdotal:</strong> Consagración de los sacerdotes para servir a Dios.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 4: NOTAS -->
+        <div id="notas" class="section">
+            <div class="card">
+                <h2>Mis Notas, Apuntes y Recordatorios</h2>
+                <p>Escribe aquí lo que necesites recordar para tus clases de catequesis, fechas importantes o reflexiones personales. ¡Se guardará automáticamente en este aparato!</p>
+                
+                <textarea id="userNotes" placeholder="Escribe tus notas, ideas de manualidades, nombres de niños, tareas pendientes..."></textarea>
+                <br>
+                <button class="btn-action" onclick="guardarNotas()">💾 Guardar Mis Notas</button>
+                <span id="saveStatus" style="margin-left: 15px; color: green; font-weight: bold; display: none;">¡Guardado con éxito! ✅</span>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Hecho con mucho amor y respeto para doña Esperanza — Que Dios bendiga su hermosa labor cada día.</p>
+    </footer>
+
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            
+            document.getElementById(tabId).classList.add('active');
+            event.target.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        const baseDatosCatolica = {
+            "biblia": { titulo: "📖 La Biblia y Septiembre", desc: "La Palabra de Dios es la carta de amor que Él nos dejó. En septiembre se le dedica un tiempo especial para la lectura y estudio en familia, con dinámicas y conocimiento de los libros sagrados." },
+            "rosario": { titulo: "📿 El Santo Rosario", desc: "El Rosario es la oración meditada de los misterios de la vida de Jesús junto a la Virgen María. Cada Ave María es una rosa espiritual que le regalamos a nuestra Madre." },
+            "mandamientos": { titulo: "📜 Los Mandamientos de la Ley de Dios", desc: "Son 10 reglas de amor que Dios nos dio para saber cómo vivir en armonía con Él, con nosotros mismos y con el prójimo." },
+            "sacramentos": { titulo: "⛪ Los 7 Sacramentos", desc: "Son signos sagrados instituidos por Jesucristo para darnos su gracia: Bautismo, Eucaristía, Confirmación, Reconciliación, Unción de los enfermos, Matrimonio y Orden Sacerdotal." },
+            "san jose": { titulo: "🔨 San José (Marzo)", desc: "Padre adoptivo de Jesús y esposo fiel de la Virgen María. Ejemplo grandioso de silencio, obediencia, trabajo honrado y protección de la Sagrada Familia." },
+            "familia": { titulo: "👨‍👩‍👧‍👦 La Sagrada Familia (Febrero)", desc: "Jesús, María y José forman el modelo perfecto de hogar donde reina el amor, el respeto y la presencia de Dios en el centro de sus vidas." },
+            "purgatorio": { titulo: "🕯️ Las Almas del Purgatorio (Noviembre)", desc: "Mes consagrado a ofrecer nuestras oraciones, misas y sacrificios por los fieles difuntos que se purifican antes de entrar a la gloria del cielo." },
+            "adviento": { titulo: "🌟 Adviento y Navidad (Diciembre)", desc: "Tiempo de alegre espera de la venida de Nuestro Señor Jesucristo, preparando nuestro corazón como un pesebre limpio y lleno de amor." },
+            "jesus": { titulo: "✨ Santísimo Nombre de Jesús (Enero)", desc: "Recordamos que Dios Padre le dio un nombre que está sobre todo nombre, ante el cual toda rodilla se dobla en el cielo y en la tierra." },
+            "pascua": { titulo: "🕊️ Resurrección del Señor (Abril)", desc: "La fiesta más grande de los católicos. Cristo venció a la muerte y nos abrió las puertas de la vida eterna. ¡Aleluya!" },
+            "maria": { titulo: "🌸 Santísima Virgen María (Mayo)", desc: "Mes de las flores y de profunda devoción mariana. Nuestra intercesora y madre amorosa que siempre nos lleva de la mano hacia su Hijo Jesús." },
+            "corazon": { titulo: "❤️ Sagrado Corazón de Jesús (Junio)", desc: "Devoción al amor tierno y misericordioso de Jesús, cuyo corazón arde por la salvación de toda la humanidad." }
+        };
+
+        function buscarContenido() {
+            const query = document.getElementById('searchInput').value.toLowerCase().trim();
+            procesarBusqueda(query);
+        }
+
+        function buscarRapido(termino) {
+            document.getElementById('searchInput').value = termino;
+            procesarBusqueda(termino);
+        }
+
+        function procesarBusqueda(query) {
+            const resultBox = document.getElementById('searchResultCard');
+            const titleEl = document.getElementById('resultTitle');
+            const descEl = document.getElementById('resultDesc');
+
+            let encontrado = false;
+            let textoResultado = "";
+            let tituloResultado = "";
+
+            for (let key in baseDatosCatolica) {
+                if (query.includes(key) || key.includes(query)) {
+                    tituloResultado = baseDatosCatolica[key].titulo;
+                    textoResultado = baseDatosCatolica[key].desc;
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (encontrado) {
+                titleEl.innerText = tituloResultado;
+                descEl.innerText = textoResultado;
+                resultBox.style.display = "block";
+            } else if (query === "") {
+                titleEl.innerText = "Aviso";
+                descEl.innerText = "Por favor escribe una palabra o usa los botones de temas rápidos.";
+                resultBox.style.display = "block";
+            } else {
+                titleEl.innerText = "Resultado de búsqueda: " + query;
+                descEl.innerText = "No se encontró un artículo exacto con esa palabra, pero te invitamos a revisar las pestañas de 'Calendario Litúrgico' y 'Oraciones y Guías' donde encontrarás mucha información útil para tu labor.";
+                resultBox.style.display = "block";
+            }
+        }
+
+        window.onload = function() {
+            if(localStorage.getItem('notasDoñaEsperanzaCompleto')) {
+                document.getElementById('userNotes').value = localStorage.getItem('notasDoñaEsperanzaCompleto');
+            }
+        }
+
+        function guardarNotas() {
+            const notas = document.getElementById('userNotes').value;
+            localStorage.setItem('notasDoñaEsperanzaCompleto', notas);
+            const status = document.getElementById('saveStatus');
+            status.style.display = 'inline';
+            setTimeout(() => {
+                status.style.display = 'none';
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
